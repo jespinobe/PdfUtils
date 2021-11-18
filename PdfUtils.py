@@ -40,5 +40,31 @@ def validate_file(pdf_file):
     else:
         return False
 
+#program who paste two pdf file
+def paste_pdf(pdf_file1, pdf_file2):
+    import PyPDF2
+    pdf_reader1 = PyPDF2.PdfFileReader(pdf_file1)
+    pdf_reader2 = PyPDF2.PdfFileReader(pdf_file2)
+    pdf_writer = PyPDF2.PdfFileWriter()
+    for page_number in range(pdf_reader1.numPages):
+        page_object = pdf_reader1.getPage(page_number)
+        pdf_writer.addPage(page_object)
+    for page_number in range(pdf_reader2.numPages):
+        page_object = pdf_reader2.getPage(page_number)
+        pdf_writer.addPage(page_object)
+    return pdf_writer
 
-main()
+def filesToPaste():
+    pdf_file1 = input("Enter the name of the first pdf file: ")
+    if (validate_file(pdf_file1)==True):
+        pdf_file2 = input("Enter the name of the second pdf file: ")
+        pdf_file_paste = input("Enter the name of the paste pdf file: ")
+        if (validate_file(pdf_file2)==True):
+            pdf_writer = paste_pdf(pdf_file1, pdf_file2)
+            save_pdf(pdf_writer, pdf_file_paste)
+            return True
+        else:
+            print("The file is not a pdf file or it does not exist")
+            return False
+    
+
